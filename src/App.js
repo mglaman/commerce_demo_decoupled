@@ -1,25 +1,71 @@
 import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import logo from './logo.svg';
 import './App.css';
+
+const GET_PRODUCTS = gql`
+query{
+  searchAPISearch(
+    index_id: "products",
+    range: {start: 0, end: 10},
+    fulltext: {keys: "Print", fields: ["title"]}
+    conditions: [
+      {operator: "=", name: "special_name", value: ""}
+    ]
+    facets: [
+      {operator: "=", field: "brand_name", limit: 0, min_count: 1, missing: false},
+      {operator: "=", field: "category_name", limit: 0, min_count: 1, missing: false}
+      {operator: "=", field: "special_name", limit: 0, min_count: 1, missing: false}
+    ]
+  ) {
+    documents {
+      ... on ProductsDoc {
+        title,
+        product_id
+        brand_name
+        category_name
+        special_name
+      }
+    }
+  }
+}
+`
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Query query={GET_PRODUCTS}>
+          {({ loading, error, data }) => {
+            if (loading) return 'Loading...';
+            if (error) return `Error! ${error.message}`;
+            console.log(data);
+            return (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap'
+              }}>
+                {data.searchAPISearch.documents.map(document => {
+                  return (
+                    <div key={document.product_id} style={{
+                      width: '33%',
+                      maxWidth: '33%',
+                      flex: '1 0 33%',
+                      height: '250px',
+                    }}>
+                      <div style={{
+                        margin: '1rem',
+                      }}>
+                        <strong>{document.title}</strong>
+                      </div>
+                    </div>
+                  )
+                })}</div>
+            );
+          }}
+        </Query>
       </div>
     );
   }
