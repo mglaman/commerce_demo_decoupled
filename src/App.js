@@ -1,72 +1,34 @@
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
-import logo from './logo.svg';
-import './App.css';
-
-const GET_PRODUCTS = gql`
-query{
-  searchAPISearch(
-    index_id: "products",
-    range: {start: 0, end: 10},
-    fulltext: {keys: "Print", fields: ["title"]}
-    conditions: [
-      {operator: "=", name: "special_name", value: ""}
-    ]
-    facets: [
-      {operator: "=", field: "brand_name", limit: 0, min_count: 1, missing: false},
-      {operator: "=", field: "category_name", limit: 0, min_count: 1, missing: false}
-      {operator: "=", field: "special_name", limit: 0, min_count: 1, missing: false}
-    ]
-  ) {
-    documents {
-      ... on ProductsDoc {
-        title,
-        product_id
-        brand_name
-        category_name
-        special_name
-      }
-    }
-  }
-}
-`
+import { ApolloProvider } from 'react-apollo';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { graphqlClient } from './utils/api';
+import Header from './blocks/Header';
+import CatalogMenu from './blocks/CatalogMenu'
+import Home from './pages/Home';
+import Cart from './pages/Cart';
+import Catalog from './pages/Catalog';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Query query={GET_PRODUCTS}>
-          {({ loading, error, data }) => {
-            if (loading) return 'Loading...';
-            if (error) return `Error! ${error.message}`;
-            console.log(data);
-            return (
-              <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap'
-              }}>
-                {data.searchAPISearch.documents.map(document => {
-                  return (
-                    <div key={document.product_id} style={{
-                      width: '33%',
-                      maxWidth: '33%',
-                      flex: '1 0 33%',
-                      height: '250px',
-                    }}>
-                      <div style={{
-                        margin: '1rem',
-                      }}>
-                        <strong>{document.title}</strong>
-                      </div>
-                    </div>
-                  )
-                })}</div>
-            );
-          }}
-        </Query>
-      </div>
+      <ApolloProvider client={graphqlClient}>
+        <Router>
+          <div className="App">
+            <Header />
+            <CatalogMenu />
+            <Switch>
+              <Route exact path={`/`} component={Home} />
+              <Route path={`/cart`} component={Cart} />
+              <Route path={`/catalog/apothecary`} render={(props) => <Catalog {...props} categoryName={`Apothecary`} />} />
+              <Route path={`/catalog/audio-film`} render={(props) => <Catalog {...props} categoryName={`Audio & Film`} />} />
+              <Route path={`/catalog/men`} render={(props) => <Catalog {...props} categoryName={`Men`} />} />
+              <Route path={`/catalog/print-shop`} render={(props) => <Catalog {...props} categoryName={`Print Shop`} />} />
+              <Route path={`/catalog/urban-living`} render={(props) => <Catalog {...props} categoryName={`Urban Living`} />} />
+              <Route path={`/catalog/women`} render={(props) => <Catalog {...props} categoryName={`Women`} />} />
+            </Switch>
+          </div>
+        </Router>
+      </ApolloProvider>
     );
   }
 }
