@@ -8,6 +8,15 @@ import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Catalog from './pages/Catalog';
 
+const catalogRoutes = [
+  { path: 'apothecary', categoryName: 'Apothecary' },
+  { path: 'audio-film', categoryName: 'Audio & Film' },
+  { path: 'men', categoryName: 'Men' },
+  { path: 'print-shop', categoryName: 'Print Shop' },
+  { path: 'urban-living', categoryName: 'Urban Living' },
+  { path: 'women', categoryName: 'Women' },
+];
+
 class App extends Component {
   render() {
     return (
@@ -19,12 +28,9 @@ class App extends Component {
             <Switch>
               <Route exact path={`/`} component={Home} />
               <Route path={`/cart`} component={Cart} />
-              <Route path={`/catalog/apothecary`} render={(props) => <Catalog {...props} categoryName={`Apothecary`} />} />
-              <Route path={`/catalog/audio-film`} render={(props) => <Catalog {...props} categoryName={`Audio & Film`} />} />
-              <Route path={`/catalog/men`} render={(props) => <Catalog {...props} categoryName={`Men`} />} />
-              <Route path={`/catalog/print-shop`} render={(props) => <Catalog {...props} categoryName={`Print Shop`} />} />
-              <Route path={`/catalog/urban-living`} render={(props) => <Catalog {...props} categoryName={`Urban Living`} />} />
-              <Route path={`/catalog/women`} render={(props) => <Catalog {...props} categoryName={`Women`} />} />
+              {catalogRoutes.map(routeInfo => (
+                <Route path={`/catalog/${routeInfo.path}`} render={(props) => <Catalog {...props} categoryName={routeInfo.categoryName} />} />
+              ))}
             </Switch>
           </div>
         </Router>

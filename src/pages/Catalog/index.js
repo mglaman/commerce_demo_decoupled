@@ -1,6 +1,7 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
+import ProductCatalog from '../../blocks/ProductCatalog'
 
 export default (props) => {
   const GET_PRODUCTS = gql`
@@ -28,36 +29,48 @@ query{
     }
   }
 }
-`
+`;
 
   return (
     <Query query={GET_PRODUCTS}>
-      {({ loading, error, data }) => {
+      {({loading, error, data}) => {
         if (loading) return 'Loading...';
         if (error) return `Error! ${error.message}`;
         console.log(data);
         return (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap'
-          }}>
-            {data.searchAPISearch.documents.map(document => {
-              return (
-                <div key={document.product_id} style={{
-                  width: '33%',
-                  maxWidth: '33%',
-                  flex: '1 0 33%',
-                  height: '250px',
-                }}>
-                  <div style={{
-                    margin: '1rem',
-                  }}>
-                    <strong>{document.title}</strong>
+          <div className={`container`}>
+            <div className={`row`}>
+              <aside className={`col-sm-3`}>
+                Sidebar
+              </aside>
+              <section className={`col-sm-9`}>
+                <div className={`container-fluid`}>
+                  <div className={`row`}>
+                    {data.searchAPISearch.documents.map(document => {
+                      return (
+                        <div className={`col-lg-4 col-md-6`}>
+                          <ProductCatalog product={{
+                            entityUuid: document.productId,
+                            entityLabel: document.title,
+                            queryVariations: {
+                              entities: [
+                                {
+                                  price: {
+                                    number: '1.00',
+                                    currencyCode: 'USD'
+                                  }
+                                }
+                              ]
+                            }
+                          }}/>
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
-              )
-            })}</div>
+              </section>
+            </div>
+          </div>
         );
       }}
     </Query>

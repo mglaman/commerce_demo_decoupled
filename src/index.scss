@@ -1,3 +1,28 @@
+// Colors
+$violet:        #41449f;
+$violet-hover:  rgba($violet, 80);
+$violet-medium: #babad3;
+$violet-light:  #e9e9f2;
+$green:         #00746b;
+$green-hover:   rgba($green, 80);
+$red:           #ff4141;
+$red-hover:     rgba($red, 80);
+
+// Brand colors
+$brand-primary:         $violet;
+$brand-primary-o:       rgba($violet, 0.1);
+$brand-success:         $green;
+$brand-info:            $violet;
+$brand-warning:         #f0ad4e; // default bootstrap
+$brand-danger:          $red;
+
+//** Global textual link color.
+$link-color:            $brand-primary;
+//** Link hover color set via `darken()` function.
+$link-hover-color:      darken($link-color, 15%);
+//** Link hover decoration.
+$link-hover-decoration: none;
+
 @import '~bootstrap/scss/bootstrap.scss';
 
 body {
@@ -16,5 +41,90 @@ body {
   color: #fff;
   a, .btn-link {
     color: #fff;
+  }
+}
+
+.featured-products{
+  padding: 20px 0 50px;
+  .commerce-product{
+    margin: 40px auto;
+  }
+}
+
+.commerce-product--catalog{
+  margin: 15px auto;
+  max-width: 370px;
+  border-bottom: 2px solid $brand-primary;
+  &:hover{
+    .commerce-product--catalog__hover-text{
+      visibility: visible;
+      opacity: 1;
+    }
+    .commerce-product--catalog__info{
+      padding: 0 15px;  background-color: $brand-primary;
+      color: white;
+      .field--name-title{
+        padding-right: 10px;
+      }
+      a{
+        color: white;
+      }
+    }
+  }
+  &__image{
+    position: relative;
+  }
+  &__info{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 80px;
+    border-top: 2px solid white;
+    font-size: $h6-font-size;
+    transition: all .4s ease;
+    .field--name-title{
+      padding-right: 40px;// to avoid title collapsing
+      font-size: $h5-font-size;
+      font-weight: bold;
+      line-height: 1.2;
+      transition: padding-right .4s ease;
+      a{
+        color: $gray-800;
+        font-weight: bold;
+        &:before{
+          position: absolute;
+          top: 0;
+          display: block;
+          width: 100%;
+          height: 100%;
+          content:"";
+        }
+      }
+    }
+  }
+  &__hover-text{
+    position: absolute;
+    top: 0;
+    display: flex;
+    visibility: hidden;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($brand-primary, .8);
+    color: white;
+    text-align: center;
+    font-size: $h6-font-size;
+    opacity: 0;
+    transition: all .4s ease;
+    &:hover{
+      color: white;
+    }
+    .glyph{
+      width: 100%;
+      font-size: 44px;
+    }
   }
 }
