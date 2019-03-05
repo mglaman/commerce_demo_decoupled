@@ -26,9 +26,27 @@ query{
         queryVariations {
           entities {
             ... on CommerceProductVariation {
-              price {
+             price {
                 number
                 currencyCode
+              }
+            }
+            ... on CommerceProductVariationSimple {
+              fieldImages {
+                derivative(style: CATALOG)  {
+                  url
+                  width
+                  height
+                }
+              }
+            }
+            ... on CommerceProductVariationClothing {
+              fieldImages {
+                derivative(style: CATALOG)  {
+                  url
+                  width
+                  height
+                }
               }
             }
           }
@@ -47,7 +65,7 @@ export default (props) => {
         <div className={`featured-products`}>
           <div className={`row`}>
             <div className="col-md-12">
-              <h2 className="h1 text-align-center line">Featured products</h2>
+              <h2 className="h1 text-center line">Featured products</h2>
             </div>
           </div>
           <div className={`row`}>
