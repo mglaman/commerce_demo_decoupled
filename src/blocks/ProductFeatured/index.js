@@ -12,7 +12,7 @@ export default (props) => {
           <Link to={`/product/${props.product.entityUuid}`}>
             <img src={image.derivative.url} width={image.derivative.width} height={image.derivative.height} alt={image.alt} className={`img-fluid`} />
           </Link>
-          <Link to={`/product/${props.product.entityUuid}`} className="commerce-product--catalog__hover-text"><i class="glyph glyph-look"></i>View product</Link>
+          <Link to={`/product/${props.product.entityUuid}`} className="commerce-product--catalog__hover-text"><i className="glyph glyph-look"></i>View product</Link>
         </div>
         <div className={`commerce-product--catalog__info`}>
           <div className={`field--name-title`}>

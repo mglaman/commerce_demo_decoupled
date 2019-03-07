@@ -7,6 +7,7 @@ import CatalogMenu from './blocks/CatalogMenu'
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Catalog from './pages/Catalog';
+import Product from './pages/Product';
 
 const catalogRoutes = [
   { path: 'apothecary', categoryName: 'Apothecary' },
@@ -31,6 +32,7 @@ class App extends Component {
               {catalogRoutes.map(routeInfo => (
                 <Route path={`/catalog/${routeInfo.path}`} render={(props) => <Catalog {...props} categoryName={routeInfo.categoryName} />} />
               ))}
+              <Route path={`/product/:productId`} component={Product} />
             </Switch>
           </div>
         </Router>

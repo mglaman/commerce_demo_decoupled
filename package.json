@@ -15,6 +15,7 @@
     "react-apollo": "^2.5.1",
     "react-dom": "^16.8.3",
     "react-icons": "^3.4.0",
+    "react-placeholder": "^3.0.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.5"
