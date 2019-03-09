@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import { cartFlyoutOpen } from '../../actions'
 
 const CartBlock = ({ cart, dispatch }) => {
-    return (<div onClick={() => cart.itemCount > 0 ? dispatch(cartFlyoutOpen()) : null}><FaShoppingCart/> { cart.itemCount } { cart.itemCount === 1 ? 'item' : 'items'}</div>)
+    return (<div style={{
+        cursor: 'pointer',
+    }} onClick={() => cart.itemCount > 0 ? dispatch(cartFlyoutOpen()) : null}><FaShoppingCart/> { cart.itemCount } { cart.itemCount === 1 ? 'item' : 'items'}</div>)
 }
 const mapStateToProps = ({ cart }) => ({ cart });
 const ConnectedCartBlock = connect(mapStateToProps)(CartBlock);

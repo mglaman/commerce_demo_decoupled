@@ -55,7 +55,7 @@ const cartFlyoutReducer = handleActions({
     open: false,
   }),
 }, {
-  open: true,
+  open: false,
 })
 
 export default combineReducers({
