@@ -25,36 +25,47 @@ query{
         entityId,
         entityUuid,
         entityBundle,
-        queryVariations {
-          entities {
-            ... on CommerceProductVariation {
-             price {
+        ... on CommerceProductSimple {
+          variations {
+            entity {
+              sku
+              price {
                 number
                 currencyCode
               }
-            }
-            ... on CommerceProductVariationSimple {
-              fieldImages {
-                derivative(style: CATALOG)  {
-                  url
-                  width
-                  height
+              ... on CommerceProductVariationSimple {
+                fieldImages {
+                  derivative(style: CATALOG) {
+                    url
+                    width
+                    height
+                  }
                 }
               }
             }
-            ... on CommerceProductVariationClothing {
-              fieldImages {
-                derivative(style: CATALOG)  {
-                  url
-                  width
-                  height
+          }
+        }
+        ... on CommerceProductClothing {
+          variations {
+            entity {
+              sku
+              price {
+                number
+                currencyCode
+              }
+              ... on CommerceProductVariationClothing {
+                fieldImages {
+                  derivative(style: CATALOG) {
+                    url
+                    width
+                    height
+                  }
                 }
               }
             }
           }
         }
       }
-
     }
   }
 }
@@ -76,7 +87,11 @@ export default (props) => {
                 if (loading) return <div key={`loading`}>Loading...</div> ;
                 if (error) return <div key={`error`}>Error! ${error.message}</div> ;
                 return (data.commerceProductQuery.entities.map(document => {
-                  return (<ProductFeatured key={document.entityUuid} product={document} />)
+                  return (
+                    <div className={`featured-seller col-md-4`}>
+                      <ProductFeatured key={document.entityUuid} product={document} />
+                    </div>
+                    )
                 }))
               }}
             </Query>
