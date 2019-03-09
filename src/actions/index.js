@@ -16,10 +16,8 @@ export const cartFetch = createActionThunk('CART_FETCH', async (store) => {
   return await res.json();
 })
 
-
 export const cartAdd = createActionThunk('CART_ADD', async (variation, store) => {
   const { cart: {cartToken} } = store.getState();
-  console.log(variation);
   const res = await fetch(`${process.env.REACT_APP_API_URL}/cart/add?_format=json`, {
     method: 'POST',
     headers: {
@@ -33,5 +31,16 @@ export const cartAdd = createActionThunk('CART_ADD', async (variation, store) =>
     }])
   })
   await res.json();
+  store.dispatch(cartFetch());
+})
+export const cartRemove = createActionThunk('CART_REMOVE', async (orderItem, store) => {
+  const { cart: {cartToken} } = store.getState();
+  const { order_item_id, order_id } = orderItem;
+  await fetch(`${process.env.REACT_APP_API_URL}/cart/${order_id}/items/${order_item_id}?_format=json`, {
+    method: 'DELETE',
+    headers: {
+      'Commerce-Cart-Token': cartToken,
+    }
+  })
   store.dispatch(cartFetch());
 })

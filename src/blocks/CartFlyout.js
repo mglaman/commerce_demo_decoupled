@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { cartFlyoutClose } from '../actions'
+import { cartFlyoutClose, cartRemove } from '../actions'
 import { Link } from 'react-router-dom'
 import { FaRegWindowClose, FaSpinner } from 'react-icons/fa'
 import { formatCurrency } from '../utils/currency'
@@ -45,7 +45,7 @@ const CartFlyout = (props) => {
                             {formatCurrency(orderItem.total_price.currency_code, orderItem.total_price.number)}
                           </td>
                           <td className="cart-block--offcanvas-cart-table__remove">
-                            <button className="btn btn-link text-light"><FaRegWindowClose/></button>
+                            <button className="btn btn-link text-light" onClick={() => { dispatch(cartRemove(orderItem)) }}><FaRegWindowClose/></button>
                           </td>
                         </tr>
                       )
