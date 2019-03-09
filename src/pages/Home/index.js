@@ -22,7 +22,9 @@ query{
     entities {
       ... on CommerceProduct {
         entityLabel,
+        entityId,
         entityUuid,
+        entityBundle,
         queryVariations {
           entities {
             ... on CommerceProductVariation {
@@ -71,10 +73,10 @@ export default (props) => {
           <div className={`row`}>
             <Query query={GET_FEATURED_PRODUCTS}>
               {({ loading, error, data }) => {
-                if (loading) return 'Loading...';
-                if (error) return `Error! ${error.message}`;
+                if (loading) return <div key={`loading`}>Loading...</div> ;
+                if (error) return <div key={`error`}>Error! ${error.message}</div> ;
                 return (data.commerceProductQuery.entities.map(document => {
-                  return (<ProductFeatured product={document} />)
+                  return (<ProductFeatured key={document.entityUuid} product={document} />)
                 }))
               }}
             </Query>

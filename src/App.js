@@ -30,7 +30,7 @@ class App extends Component {
               <Route exact path={`/`} component={Home} />
               <Route path={`/cart`} component={Cart} />
               {catalogRoutes.map(routeInfo => (
-                <Route path={`/catalog/${routeInfo.path}`} render={(props) => <Catalog {...props} categoryName={routeInfo.categoryName} />} />
+                <Route key={routeInfo.path} path={`/catalog/${routeInfo.path}`} render={(props) => <Catalog {...props} categoryName={routeInfo.categoryName} />} />
               ))}
               <Route path={`/product/:productId`} component={Product} />
             </Switch>

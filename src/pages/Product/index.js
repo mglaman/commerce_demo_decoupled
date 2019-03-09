@@ -1,47 +1,160 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import ReactPlaceholder from 'react-placeholder';
-import "react-placeholder/lib/reactPlaceholder.css";
+import React, { PureComponent } from 'react'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+import { formatCurrency } from '../../utils/currency'
 
 class Product extends PureComponent {
-    state = {
-        data: null,
+  render () {
+    const {productId} = this.props.match.params
+    const GET_PRODUCT = gql`{
+  commerceProductById(id: "${productId}") {
+    entityId
+    entityBundle
+    title
+    ... on CommerceProductSimple {
+      body {
+        processed
+      }
+      variations {
+        entity {
+          sku
+          price {
+            number
+            currencyCode
+          }
+          ... on CommerceProductVariationSimple {
+            fieldImages {
+              derivative(style: PRODUCT) {
+                url
+                width
+                height
+              }
+            }
+          }
+        }
+      }
+      fieldBrand {
+        entity {
+          name
+        }
+      }
+      fieldProductCategories {
+        entity {
+          name
+        }
+      }
+      fieldSpecialCategories {
+        entity {
+          name
+        }
+      }
     }
-    async componentDidMount() {
-        const { match } = this.props;
-        const url = `${process.env.REACT_APP_API_URL}/jsonapi/commerce_product/default/${match.params.productId}`;
-        const res = await fetch(url);
-        const newState = await res.json();
-        await this._setState(newState);
+    ... on CommerceProductClothing {
+      body {
+        processed
+      }
+      variations {
+        entity {
+          sku
+          price {
+            number
+            currencyCode
+          }
+          ... on CommerceProductVariationClothing {
+            fieldImages {
+              derivative(style: PRODUCT) {
+                url
+                width
+                height
+              }
+            }
+          }
+        }
+      }
+      fieldBrand {
+        entity {
+          name
+        }
+      }
+      fieldProductCategories {
+        entity {
+          name
+        }
+      }
+      fieldSpecialCategories {
+        entity {
+          name
+        }
+      }
     }
-    async _setState(state) {
-        return new Promise(res => this.setState(state, res));
-    }
-    render() {
-        console.log(this.state);
-        return (
-            <div className={`container-fluid`}>
+  }
+}`
+
+    return (
+      <Query query={GET_PRODUCT}>
+        {({loading, error, data}) => {
+          if (loading) return <div key={`loading`}>Loading...</div>
+          if (error) return <div key={`error`}>Error! ${error.message}</div>
+          if (data) {
+            const {
+              title,
+              body: {processed: bodyProcessed},
+              variations,
+              fieldBrand: {
+                entity: {
+                  name: productBrand
+                }
+              },
+              fieldProductCategories: productCategories,
+              fieldSpecialCategories: specialCategories
+            } = data.commerceProductById
+            const {entity: defaultVariation} = variations[0]
+            const image = defaultVariation.fieldImages[0];
+            console.log(defaultVariation)
+            return (
+              <div className={`container-fluid`}>
                 <div className={`container commerce-product--full`}>
-                    <div className={`row`}>
-                        <div className={`col-md-6`}></div>
-                        <div className={`col-md-6`}>
-                            <div className={`commerce-product__contents`}>
-                                <div className={`field--name-title`}>
-                                    <ReactPlaceholder type={`text`} rows={1} ready={this.state.data !== null}>
-                                        <span>{this.state.data ? this.state.data.attributes.title : null}</span>
-                                    </ReactPlaceholder>
-                                </div>
-                                <div className={`field--name-body`}>
-                                    <ReactPlaceholder type={`text`} rows={4} ready={this.state.data !== null}>
-                                    <div dangerouslySetInnerHTML={{ __html: this.state.data ? this.state.data.attributes.body.processed : null }}/>
-                                    </ReactPlaceholder>
-                                </div>
-                            </div>
-                        </div>
+                  <div className={`row`}>
+                    <div className={`col-md-6`}>
+                      <img src={image.derivative.url} width={image.derivative.width} height={image.derivative.height} alt={image.alt} className={`img-fluid`} />
                     </div>
+                    <div className={`col-md-6`}>
+                      <div className={`commerce-product__contents`}>
+                        <div className={`field--name-title`}>{title}</div>
+                        <div className={`field--name-price`}>{formatCurrency(defaultVariation.price.currencyCode, defaultVariation.price.number)}</div>
+                        <div className="field--name-field-brand">{productBrand}</div>
+                        <div className={`field--name-body`}>
+                          <div dangerouslySetInnerHTML={{__html: bodyProcessed}}/>
+                        </div>
+                        <div className={`field--name-variations`}>
+                          <div className={`field--item`}>
+                            <button className="button button--primary js-form-submit form-submit btn-success btn" type="button">
+                              Add to cart
+                            </button>
+                          </div>
+                        </div>
+                        <div className={`field--name-field-product-categories`}>
+                          {productCategories.map(category => (
+                            <div key={category.entity.name}>{category.entity.name}</div>
+                          ))}
+                        </div>
+                        <div className={`field--name-field-special-categories`}>
+                          {specialCategories.map(category => (
+                            <div key={category.entity.name}>{category.entity.name}</div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </div>
-        )
-    }
+              </div>
+            )
+          }
+        }
+        }
+      </Query>
+    )
+  }
 }
-export default Product;
+
+export default Product

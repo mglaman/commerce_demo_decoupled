@@ -8,7 +8,7 @@ export default (props) => {
     <div className={`commerce-product--catalog`}>
       <div className={`commerce-product--catalog__info`}>
         <div className={`field--name-title`}>
-          <Link to={`/product/${props.product.entityUuid}`}>{props.product.entityLabel}</Link>
+          <Link to={`/product/${props.product.entityId}`}>{props.product.entityLabel}</Link>
         </div>
         <div className={`field--name-price`}>{formatCurrency(defaultVariation.price.currencyCode, defaultVariation.price.number)}</div>
       </div>
