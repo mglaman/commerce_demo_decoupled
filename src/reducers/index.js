@@ -18,7 +18,10 @@ const cartReducer = handleActions({
   'CART_FETCH_SUCCEEDED': (state, { payload:carts }) => {
     return {
       ...state,
-      carts
+      carts,
+      itemCount: carts.reduce((previousValue, currentValue) =>
+        previousValue + currentValue.order_items
+          .reduce((previousValue, currentValue) => (previousValue + parseInt(currentValue.quantity)), 0), 0)
     }
   },
   'CART_FETCH_FAILED': (state, { payload }) => {
@@ -35,9 +38,27 @@ const cartReducer = handleActions({
   loading: false,
   cartToken: null,
   carts: [],
+  itemCount: 0
 })
 
+const cartFlyoutReducer = handleActions({
+  'CART_ADD_SUCCEEDED': (state) => ({
+    ...state,
+    open: true,
+  }),
+  CART_FLYOUT_OPEN: (state) => ({
+    ...state,
+    open: true,
+  }),
+  CART_FLYOUT_CLOSE: (state) => ({
+    ...state,
+    open: false,
+  }),
+}, {
+  open: true,
+})
 
 export default combineReducers({
   cart: cartReducer,
+  cartFlyout: cartFlyoutReducer
 });

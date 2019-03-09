@@ -14,6 +14,7 @@ import Cart from './pages/Cart';
 import Catalog from './pages/Catalog';
 import Product from './pages/Product';
 import { cartFetch, setCartToken } from './actions'
+import CartFlyout from './blocks/CartFlyout'
 
 
 const store = configureStore();
@@ -47,6 +48,7 @@ class App extends Component {
               <Route path={`/product/:productId`} component={Product} />
             </Switch>
             <Footer />
+            <CartFlyout/>
           </div>
         </Router>
       </ApolloProvider>

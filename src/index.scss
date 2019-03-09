@@ -80,7 +80,21 @@ body {
   }
 }
 
+.well {
+  min-height: 20px;
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+}
+.well-primary {
+  background-color: $brand-primary;
+}
+.well-lg {
+  padding: 37px;
+}
+
 @import "scss/footer";
 @import "scss/catalog";
 @import "scss/product";
 @import "scss/facets";
+@import "scss/flyout";
