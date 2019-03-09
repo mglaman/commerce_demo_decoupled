@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+import { connectRouter } from 'connected-react-router'
 import { combineReducers } from 'redux'
 
 const cartReducer = handleActions({
@@ -54,11 +55,26 @@ const cartFlyoutReducer = handleActions({
     ...state,
     open: false,
   }),
+  '@@router/LOCATION_CHANGE': (state) => ({
+    ...state,
+    open: false,
+  }),
 }, {
   open: false,
 })
 
-export default combineReducers({
+const navigationReducer = handleActions({
+  '@@router/LOCATION_CHANGE': (state) => {
+    window.scrollTo(0, 0);
+    return ({
+      ...state,
+    })
+  },
+}, {})
+
+export default history => combineReducers({
+  router: connectRouter(history),
   cart: cartReducer,
-  cartFlyout: cartFlyoutReducer
+  cartFlyout: cartFlyoutReducer,
+  navigation: navigationReducer
 });

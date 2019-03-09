@@ -25,21 +25,20 @@ const CartFlyout = (props) => {
             <button type="button" className="button btn close-btn"><span className="visually-hidden"> Close cart</span></button>
           </div>
           {itemCount === 0 ? <div key={`empty`}>Your cart is empty</div> : [
-            <div className={`cart-block--offcanvas-contents`}>
+            <div className={`cart-block--offcanvas-contents`} key={`contents`}>
               <div className={`cart-block--offcanvas-contents__inner`}>
                 <h2>Shopping bag</h2>
                 <div className={`cart-block--offcanvas-contents__items`}>
                   <table className={`cart-block--offcanvas-cart-table table`}>
                     <tbody>
                     {cart.order_items.map(orderItem => {
-                      console.log(orderItem);
                       return (
-                        <tr>
+                        <tr key={orderItem.order_item_id}>
                           <td className="cart-block--offcanvas-cart-table__title">
-                            <Link onClick={() => closeFlyout(dispatch)} className={`text-light`} to={`/product/${orderItem.purchased_entity.product_id}`}>{orderItem.title}</Link>
+                            <Link className={`text-light`} to={`/product/${orderItem.purchased_entity.product_id}`}>{orderItem.title}</Link>
                           </td>
                           <td className="cart-block--offcanvas-cart-table__quantity">
-                            <input className="form-control" type="number" min="0" data-key="0" value={parseInt(orderItem.quantity)} />
+                            <input className="form-control" type="number" min="0" data-key="0" defaultValue={parseInt(orderItem.quantity)} />
                           </td>
                           <td className="cart-block--offcanvas-cart-table__price">
                             {formatCurrency(orderItem.total_price.currency_code, orderItem.total_price.number)}
@@ -61,7 +60,7 @@ const CartFlyout = (props) => {
                   </table>
                 </div>
                 <div className="cart-block--offcanvas-contents__links text-center">
-                  <Link to="/cart" className={`btn text-light btn-link`} onClick={() => closeFlyout(dispatch)}>View cart</Link>
+                  <Link to="/cart" className={`btn text-light btn-link`}>View cart</Link>
                 </div>
                 <div className="cart--cart-offcanvas__close d-md-none text-center">
                   <button type="button" onClick={() => closeFlyout(dispatch)} className="btn text-light btn-link">Continue shopping</button>

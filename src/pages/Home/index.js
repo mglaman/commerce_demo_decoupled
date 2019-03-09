@@ -89,7 +89,7 @@ export default (props) => {
                   if (error) return <div key={`error`}>Error! ${error.message}</div> ;
                   return (data.commerceProductQuery.entities.map(document => {
                     return (
-                      <div className={`featured-seller col-md-4`}>
+                      <div className={`featured-seller col-md-4`} key={document.entityUuid}>
                         <ProductFeatured key={document.entityUuid} product={document} />
                       </div>
                     )

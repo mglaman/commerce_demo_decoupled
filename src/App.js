@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
-
-import configureStore from './utils/configureStore';
+import { ConnectedRouter } from 'connected-react-router'
+import configureStore, { history } from './utils/configureStore';
 import { graphqlClient } from './utils/api';
 
 import Header from './blocks/Header';
@@ -31,12 +31,13 @@ const catalogRoutes = [
 ];
 
 class App extends Component {
+
   render() {
     return (
       <Provider store={store}>
       <ApolloProvider client={graphqlClient}>
-        <Router>
-          <div className="App">
+        <ConnectedRouter history={history}>
+        <div className="App">
             <Header />
             <CatalogMenu />
             <Switch>
@@ -50,7 +51,7 @@ class App extends Component {
             <Footer />
             <CartFlyout/>
           </div>
-        </Router>
+        </ConnectedRouter>
       </ApolloProvider>
       </Provider>
     );

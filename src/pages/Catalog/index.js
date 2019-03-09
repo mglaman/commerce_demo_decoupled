@@ -67,7 +67,6 @@ export default (props) => {
       const { commerceProductQuery: {
         entities,
       } } = data;
-      console.log(entities);
       return <div className={`container`}>
         <div className={`row`}>
           <aside className={`col-sm-3`}>
