@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react'
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import ProductFeatured from '../../blocks/ProductFeatured';
@@ -73,31 +73,50 @@ query{
 
 export default (props) => {
   return (
-    <div className={`container-fluid`}>
-      <div className={`container`}>
-        <div className={`featured-products`}>
-          <div className={`row`}>
-            <div className="col-md-12">
-              <h2 className="h1 text-center line">Featured products</h2>
+    <Fragment>
+      <div className={`container-fluid`}>
+        <div className={`container`}>
+          <div className={`featured-products`}>
+            <div className={`row`}>
+              <div className="col-md-12">
+                <h2 className="h1 text-center line">Featured products</h2>
+              </div>
             </div>
-          </div>
-          <div className={`row`}>
-            <Query query={GET_FEATURED_PRODUCTS}>
-              {({ loading, error, data }) => {
-                if (loading) return <div key={`loading`}>Loading...</div> ;
-                if (error) return <div key={`error`}>Error! ${error.message}</div> ;
-                return (data.commerceProductQuery.entities.map(document => {
-                  return (
-                    <div className={`featured-seller col-md-4`}>
-                      <ProductFeatured key={document.entityUuid} product={document} />
-                    </div>
+            <div className={`row`}>
+              <Query query={GET_FEATURED_PRODUCTS}>
+                {({ loading, error, data }) => {
+                  if (loading) return <div key={`loading`}>Loading...</div> ;
+                  if (error) return <div key={`error`}>Error! ${error.message}</div> ;
+                  return (data.commerceProductQuery.entities.map(document => {
+                    return (
+                      <div className={`featured-seller col-md-4`}>
+                        <ProductFeatured key={document.entityUuid} product={document} />
+                      </div>
                     )
-                }))
-              }}
-            </Query>
+                  }))
+                }}
+              </Query>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <div className="testimonial container-fluid well well-lg well-primary">
+        <div className="container">
+          <div className="text-center row">
+            <div className="col-xs-10 col-xs-push-1">
+              <p className="testimonial__text h2">Slow-carb paleo bicycle rights bushwick. Tote bag mustache man bun swag, tbh chartreuse synth stumptown portland cray.</p>
+              <div className="testimonial__rating">
+                <i className="glyphicon glyphicon-star"></i>
+                <i className="glyphicon glyphicon-star"></i>
+                <i className="glyphicon glyphicon-star"></i>
+                <i className="glyphicon glyphicon-star"></i>
+                <i className="glyphicon glyphicon-star-empty"></i>
+              </div>
+              <p>Nikola White, customer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Fragment>
   )
 }
