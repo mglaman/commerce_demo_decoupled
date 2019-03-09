@@ -2,6 +2,8 @@ import React  from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import { formatCurrency } from '../../utils/currency'
+import { connect } from 'react-redux'
+import { cartAdd } from '../../actions'
 
 const Product = (props) => {
   const {productId} = props.match.params
@@ -16,6 +18,7 @@ const Product = (props) => {
       }
       variations {
         entity {
+          variationId
           sku
           price {
             number
@@ -54,6 +57,7 @@ const Product = (props) => {
       }
       variations {
         entity {
+          variationId
           sku
           price {
             number
@@ -109,7 +113,6 @@ const Product = (props) => {
           } = data.commerceProductById
           const {entity: defaultVariation} = variations[0]
           const image = defaultVariation.fieldImages[0];
-          console.log(defaultVariation)
           return (
             <div className={`container-fluid`}>
               <div className={`container commerce-product--full`}>
@@ -127,7 +130,9 @@ const Product = (props) => {
                       </div>
                       <div className={`field--name-variations`}>
                         <div className={`field--item`}>
-                          <button className="button button--primary js-form-submit form-submit btn-success btn" type="button">
+                          <button className="button button--primary js-form-submit form-submit btn-success btn" type="button" onClick={() => {
+                            props.dispatch(cartAdd(defaultVariation))
+                          }}>
                             Add to cart
                           </button>
                         </div>
@@ -155,4 +160,4 @@ const Product = (props) => {
   )
 }
 
-export default Product
+export default connect()(Product)
