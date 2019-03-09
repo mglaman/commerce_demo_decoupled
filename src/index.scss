@@ -34,16 +34,27 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-.menu-catalog__link {
-  color: inherit;
-  text-transform: uppercase;
+.visually-hidden {
+  position: absolute !important;
+  clip: rect(1px,1px,1px,1px);
+  overflow: hidden;
+  height: 1px;
+  width: 1px;
+  word-wrap: normal;
 }
+
+
 .navbar-dark {
   font-size: 80%;
   color: #fff;
   a, .btn-link {
     color: #fff;
+  }
+}
+.jumbotron {
+  .menu-catalog__link {
+    color: inherit;
+    text-transform: uppercase;
   }
 }
 
@@ -69,6 +80,7 @@ body {
   }
 }
 
+@import "scss/footer";
 @import "scss/catalog";
 @import "scss/product";
 @import "scss/facets";

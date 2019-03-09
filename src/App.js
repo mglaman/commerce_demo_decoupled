@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { graphqlClient } from './utils/api';
 import Header from './blocks/Header';
 import CatalogMenu from './blocks/CatalogMenu'
+import Footer from './blocks/Footer'
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Catalog from './pages/Catalog';
@@ -34,6 +35,7 @@ class App extends Component {
               ))}
               <Route path={`/product/:productId`} component={Product} />
             </Switch>
+            <Footer />
           </div>
         </Router>
       </ApolloProvider>
