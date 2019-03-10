@@ -79,7 +79,7 @@
     .product--rendered-attribute {
       // selected and active variations
       .form-radio:checked  ~ label.option {
-        border: 2px solid $brand-primary;
+        border: 2px solid $primary;
       }
     }
   }
@@ -94,7 +94,7 @@
     width: auto;
   }
   .form-control{
-    border-color: $brand-primary;
+    border-color: $primary;
   }
   // Submit button
   .form-submit{
@@ -157,7 +157,7 @@
     cursor: pointer;
     &:hover{
       &:before{
-        background-color: rgba($brand-primary, 0.8);
+        background-color: rgba($primary, 0.8);
 
         // @extend .glyph-plus;
       }
@@ -176,7 +176,7 @@
       transition: background-color .2s ease;
     }
     &.active{
-      border-color: rgba($brand-primary, 0.8);
+      border-color: rgba($primary, 0.8);
     }
     img{
       display: none;

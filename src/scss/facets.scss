@@ -1,6 +1,6 @@
 .block-facets{
   padding: 30px;
-  background-color: $brand-primary-o;
+  background-color: $primary-o;
   .block-title{
     position: relative;
     margin-bottom: 20px;
@@ -8,7 +8,7 @@
     &:before{
       position: absolute;
       right: 0;
-      color: $brand-primary;
+      color: $primary;
       font-size: $facet-block-toggle-size;
       line-height: $h3-font-size;
       transition: transform .1s linear;
