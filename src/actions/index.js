@@ -44,3 +44,5 @@ export const cartRemove = createActionThunk('CART_REMOVE', async (orderItem, sto
   })
   store.dispatch(cartFetch());
 })
+
+export const checkoutChangeStep = createAction('CHECKOUT_CHANGE_STEP');

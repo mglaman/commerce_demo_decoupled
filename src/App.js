@@ -15,6 +15,7 @@ import Catalog from './pages/Catalog';
 import Product from './pages/Product';
 import { cartFetch, setCartToken } from './actions'
 import CartFlyout from './blocks/CartFlyout'
+import Checkout from './pages/Checkout'
 
 
 const store = configureStore();
@@ -43,6 +44,7 @@ class App extends Component {
             <Switch>
               <Route exact path={`/`} component={Home} />
               <Route path={`/cart`} component={Cart} />
+              <Route path={`/checkout/:orderId`} component={Checkout} />
               {catalogRoutes.map(routeInfo => (
                 <Route key={routeInfo.path} path={`/catalog/${routeInfo.path}`} render={(props) => <Catalog {...props} categoryName={routeInfo.categoryName} />} />
               ))}

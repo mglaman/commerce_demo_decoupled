@@ -72,9 +72,19 @@ const navigationReducer = handleActions({
   },
 }, {})
 
+const checkoutReducer = handleActions({
+  'CHECKOUT_CHANGE_STEP': (state, { payload }) => ({
+    ...state,
+    currentStep: payload
+  })
+}, {
+  currentStep: 'customerInformation'
+})
+
 export default history => combineReducers({
   router: connectRouter(history),
   cart: cartReducer,
   cartFlyout: cartFlyoutReducer,
-  navigation: navigationReducer
+  navigation: navigationReducer,
+  checkout: checkoutReducer,
 });

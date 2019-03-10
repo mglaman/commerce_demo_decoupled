@@ -26,6 +26,11 @@ $link-hover-decoration: none;
 $facet-block-text-size:        16px;
 $facet-block-toggle-size:      14px;
 
+$sizes: (
+  15: 15%,
+  30: 20%
+);
+
 @import '~bootstrap/scss/bootstrap.scss';
 
 body {
