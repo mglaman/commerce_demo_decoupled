@@ -38,9 +38,9 @@ const CartFlyout = (props) => {
                             <Link className={`text-light`} to={`/product/${orderItem.purchased_entity.product_id}`}>{orderItem.title}</Link>
                           </td>
                           <td className="cart-block--offcanvas-cart-table__quantity">
-                            <input className="form-control" type="number" min="0" data-key="0" defaultValue={parseInt(orderItem.quantity)} />
+                            <input className="form-control" type={`number`} min={0} defaultValue={parseInt(orderItem.quantity)} />
                           </td>
-                          <td className="cart-block--offcanvas-cart-table__price">
+                          <td className="cart-block--offcanvas-cart-table__price text-light">
                             {formatCurrency(orderItem.total_price.currency_code, orderItem.total_price.number)}
                           </td>
                           <td className="cart-block--offcanvas-cart-table__remove">
