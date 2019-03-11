@@ -40,8 +40,16 @@ const CartPage = ({ cart, dispatch }) => {
                   <td colSpan={3} />
                   <td className={``}>
                     <dl className={`row text-right`}>
+                      <dt className="col-sm-6">Subtotal</dt>
+                      <dd className="col-sm-6">{formatCurrency(cart.order_total.subtotal.currency_code, cart.order_total.subtotal.number)}</dd>
+                      {cart.order_total.adjustments.map(adjustment => (
+                        <Fragment>
+                          <dt className="col-sm-6">{adjustment.label}</dt>
+                          <dd className="col-sm-6">{formatCurrency(adjustment.amount.currency_code, adjustment.amount.number)}</dd>
+                        </Fragment>
+                      ))}
                       <dt className="col-sm-6">Total</dt>
-                      <dd className="col-sm-6">{formatCurrency(cart.total_price.currency_code, cart.total_price.number)}</dd>
+                      <dd className="col-sm-6">{formatCurrency(cart.order_total.total.currency_code, cart.order_total.total.number)}</dd>
                     </dl>
                   </td>
                 </tr>
