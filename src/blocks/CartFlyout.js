@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import { cartFlyoutClose, cartRemove } from '../actions'
 import { Link } from 'react-router-dom'
-import { FaRegWindowClose, FaSpinner } from 'react-icons/fa'
+import { MdClose } from 'react-icons/md'
 import { formatCurrency } from '../utils/currency'
 
 const closeFlyout = (dispatch) => dispatch(cartFlyoutClose());
@@ -34,17 +34,17 @@ const CartFlyout = (props) => {
                     {cart.order_items.map(orderItem => {
                       return (
                         <tr key={orderItem.order_item_id}>
-                          <td className="cart-block--offcanvas-cart-table__title">
+                          <td className="cart-block--offcanvas-cart-table__title align-middle w-50">
                             <Link className={`text-light`} to={`/product/${orderItem.purchased_entity.product_id}`}>{orderItem.title}</Link>
                           </td>
-                          <td className="cart-block--offcanvas-cart-table__quantity">
+                          <td className="cart-block--offcanvas-cart-table__quantity align-middle w-25">
                             <input className="form-control" type={`number`} min={0} defaultValue={parseInt(orderItem.quantity)} />
                           </td>
-                          <td className="cart-block--offcanvas-cart-table__price text-light">
+                          <td className="cart-block--offcanvas-cart-table__price align-middle text-light">
                             {formatCurrency(orderItem.total_price.currency_code, orderItem.total_price.number)}
                           </td>
-                          <td className="cart-block--offcanvas-cart-table__remove">
-                            <button className="btn btn-link text-light" onClick={() => { dispatch(cartRemove(orderItem)) }}><FaRegWindowClose/></button>
+                          <td className="cart-block--offcanvas-cart-table__remove align-middle">
+                            <button className="btn btn-link text-light" onClick={() => { dispatch(cartRemove(orderItem)) }}><MdClose/></button>
                           </td>
                         </tr>
                       )
@@ -53,7 +53,7 @@ const CartFlyout = (props) => {
                     <tfoot>
                     <tr>
                       <td className={`text-right`} colSpan={4}>
-                        <button type="submit" className="cart-block--offcanvas-contents__update btn btn-link text-light"> <FaSpinner/> Update quantities</button>
+                        <button type="submit" className="cart-block--offcanvas-contents__update btn btn-link text-light">Update quantities</button>
                       </td>
                     </tr>
                     </tfoot>

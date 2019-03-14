@@ -60,7 +60,7 @@ const cartFlyoutReducer = handleActions({
     open: false,
   }),
 }, {
-  open: false,
+  open: true,
 })
 
 const navigationReducer = handleActions({
