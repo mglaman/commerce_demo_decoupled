@@ -10,13 +10,13 @@ const CartPage = ({ cart, dispatch }) => {
   console.log(cart)
   return (
     <Fragment>
-      {cart.carts.map(cart => (
-        <div key={cart.order_id} className={`container`}>
+      {cart.carts.map(item => (
+        <div key={item.order_id} className={`container`}>
           <div className={`row`}>
             <div className={`col-sm-12`}>
               <table className={`table`}>
                 <tbody>
-                {cart.order_items.map(orderItem => {
+                {item.order_items.map(orderItem => {
                   return (
                     <tr key={orderItem.order_item_id}>
                       <td className="cart-block--offcanvas-cart-table__title w-50">
@@ -41,15 +41,15 @@ const CartPage = ({ cart, dispatch }) => {
                   <td className={``}>
                     <dl className={`row text-right`}>
                       <dt className="col-sm-6">Subtotal</dt>
-                      <dd className="col-sm-6">{formatCurrency(cart.order_total.subtotal.currency_code, cart.order_total.subtotal.number)}</dd>
-                      {cart.order_total.adjustments.map(adjustment => (
+                      <dd className="col-sm-6">{formatCurrency(item.order_total.subtotal.currency_code, item.order_total.subtotal.number)}</dd>
+                      {item.order_total.adjustments.map(adjustment => (
                         <Fragment>
                           <dt className="col-sm-6">{adjustment.label}</dt>
                           <dd className="col-sm-6">{formatCurrency(adjustment.amount.currency_code, adjustment.amount.number)}</dd>
                         </Fragment>
                       ))}
                       <dt className="col-sm-6">Total</dt>
-                      <dd className="col-sm-6">{formatCurrency(cart.order_total.total.currency_code, cart.order_total.total.number)}</dd>
+                      <dd className="col-sm-6">{formatCurrency(item.order_total.total.currency_code, item.order_total.total.number)}</dd>
                     </dl>
                   </td>
                 </tr>
@@ -62,8 +62,9 @@ const CartPage = ({ cart, dispatch }) => {
               </div>
             </div>
             <div className={`col-md-6 text-right`}>
-              <button type="submit" className="btn btn-link"> <FaSpinner/> Update quantities</button>
-              <Link to={`/checkout/${cart.order_id}`} className={`btn btn-primary`}>Checkout</Link>
+              {/*<button type="submit" className="btn btn-link"> <FaSpinner/> Update quantities</button>*/}
+              <Link to={`/checkout/${item.order_id}`} className={`btn btn-primary`}>Checkout (onsite)</Link>
+              <a href={`${process.env.REACT_APP_API_URL}/checkout/${item.order_id}?cartToken=${cart.cartToken}`} className={`ml-1 btn btn-primary`}>Checkout (offsite)</a>
             </div>
           </div>
         </div>
