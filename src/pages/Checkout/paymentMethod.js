@@ -7,8 +7,9 @@ class PaymentMethod extends PureComponent {
     if (this.props.checkout.currentStep !== 'paymentMethod') {
       return null;
     }
-    const {cart: {carts}, dispatch } = this.props
-    const cart = carts[0]
+    const { dispatch } = this.props
+    // const {cart: {carts}, dispatch } = this.props
+    // const cart = carts[0]
     return (
       <Fragment>
         <h3>Payment method</h3>
