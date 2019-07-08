@@ -19,10 +19,13 @@ const cartReducer = handleActions({
   'CART_FETCH_SUCCEEDED': (state, { payload:carts }) => {
     return {
       ...state,
-      carts,
-      itemCount: carts.reduce((previousValue, currentValue) =>
-        previousValue + currentValue.order_items
-          .reduce((previousValue, currentValue) => (previousValue + parseInt(currentValue.quantity)), 0), 0)
+      carts: carts.data,
+      included: carts.included,
+      itemCount: carts.included
+      .filter(item => item.type.indexOf('commerce_order_item') === 0)
+      .reduce((previousValue, currentValue) => {
+        return previousValue + parseInt(currentValue.attributes.quantity)
+      }, 0)
     }
   },
   'CART_FETCH_FAILED': (state, { payload }) => {
@@ -39,6 +42,7 @@ const cartReducer = handleActions({
   loading: false,
   cartToken: null,
   carts: [],
+  included: [],
   itemCount: 0
 })
 

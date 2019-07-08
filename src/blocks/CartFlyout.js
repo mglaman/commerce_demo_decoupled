@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { cartFlyoutClose, cartRemove } from '../actions'
 import { Link } from 'react-router-dom'
 import { MdClose } from 'react-icons/md'
-import { formatCurrency } from '../utils/currency'
 
 const closeFlyout = (dispatch) => dispatch(cartFlyoutClose());
 
@@ -12,11 +11,13 @@ const CartFlyout = (props) => {
     dispatch,
     cart: {
       carts,
+      included,
       itemCount
     },
     cartFlyout: { open }
   } = props;
   const cart = carts[0];
+  const cartItems = included.filter(item => item.type.indexOf('commerce_order_item') === 0)
   return (
     <Fragment>
       <aside id="cart-offcanvas" className={`cart-offcanvas is-${open ? 'open' : 'closed'} cart-offcanvas--right`}>
@@ -31,17 +32,21 @@ const CartFlyout = (props) => {
                 <div className={`cart-block--offcanvas-contents__items`}>
                   <table className={`cart-block--offcanvas-cart-table table`}>
                     <tbody>
-                    {cart.order_items.map(orderItem => {
+                    {cartItems.map(orderItem => {
+                      const purchasedEntityID = orderItem.relationships.purchased_entity.data.id;
+                      const purchaseEntity = included.filter(include => {
+                        return include.id === purchasedEntityID
+                      }).pop();
                       return (
-                        <tr key={orderItem.order_item_id}>
+                        <tr key={orderItem.id}>
                           <td className="cart-block--offcanvas-cart-table__title align-middle w-50">
-                            <Link className={`text-light`} to={`/product/${orderItem.purchased_entity.product_id}`}>{orderItem.title}</Link>
+                            <Link className={`text-light`} to={`/product/${purchaseEntity.relationships.product_id.data.id}`}>{orderItem.attributes.title}</Link>
                           </td>
                           <td className="cart-block--offcanvas-cart-table__quantity align-middle w-25">
-                            <input className="form-control" type={`number`} min={0} defaultValue={parseInt(orderItem.quantity)} />
+                            <input className="form-control" type={`number`} min={0} defaultValue={parseInt(orderItem.attributes.quantity)} />
                           </td>
                           <td className="cart-block--offcanvas-cart-table__price align-middle text-light">
-                            {formatCurrency(orderItem.total_price.currency_code, orderItem.total_price.number)}
+                            {orderItem.attributes.total_price.formatted}
                           </td>
                           <td className="cart-block--offcanvas-cart-table__remove align-middle">
                             <button className="btn btn-link text-light" onClick={() => { dispatch(cartRemove(orderItem)) }}><MdClose/></button>

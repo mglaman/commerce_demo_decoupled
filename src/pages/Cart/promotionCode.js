@@ -62,7 +62,7 @@ class PromotionCode extends PureComponent {
   render () {
     const {cart: {carts}} = this.props
     const cart = carts[0]
-    if (cart.coupons.length > 0) {
+    if (cart.relationships.coupons.data.length > 0) {
       return (
         <div className={`row`} key={`applied`}>
           <div className={`col-md-9`}>

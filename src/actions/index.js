@@ -8,7 +8,7 @@ export const cartFlyoutClose = createAction('CART_FLYOUT_CLOSE');
 
 export const cartFetch = createActionThunk('CART_FETCH', async (store) => {
   const { cart: {cartToken} } = store.getState();
-  const res = await fetch(`${process.env.REACT_APP_API_URL}/cart?_format=json`, {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/jsonapi/cart?fields%5Bcommerce_order--physical%5D=total_price,order_total,coupons,order_items&fields%5Bcommerce_order_item--physical_product_variation%5D=title,quantity,unit_price,total_price,purchased_entity&fields%5Bcommerce_product_variation--simple%5D=product_id&include=order_items,order_items.purchased_entity`, {
     headers: {
       'Commerce-Cart-Token': cartToken,
     }
@@ -35,8 +35,8 @@ export const cartAdd = createActionThunk('CART_ADD', async (variation, store) =>
 })
 export const cartRemove = createActionThunk('CART_REMOVE', async (orderItem, store) => {
   const { cart: {cartToken} } = store.getState();
-  const { order_item_id, order_id } = orderItem;
-  await fetch(`${process.env.REACT_APP_API_URL}/cart/${order_id}/items/${order_item_id}?_format=json`, {
+  const { id, order_id } = orderItem;
+  await fetch(`${process.env.REACT_APP_API_URL}/cart/${order_id}/items/${id}?_format=json`, {
     method: 'DELETE',
     headers: {
       'Commerce-Cart-Token': cartToken,
