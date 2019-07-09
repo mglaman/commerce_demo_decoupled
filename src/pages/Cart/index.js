@@ -45,15 +45,15 @@ const CartPage = ({ cart, dispatch }) => {
                   <td className={``}>
                     <dl className={`row text-right`}>
                       <dt className="col-sm-6">Subtotal</dt>
-                      {/* <dd className="col-sm-6">{formatCurrency(cartItem.attributes.order_total.subtotal.currency_code, cartItem.attributes.order_total.subtotal.number)}</dd> */}
+                      <dd className="col-sm-6">{formatCurrency(cartItem.attributes.order_total.subtotal.currency_code, cartItem.attributes.order_total.subtotal.number)}</dd>
                       {cartItem.attributes.order_total.adjustments.map(adjustment => (
                         <Fragment>
                           <dt className="col-sm-6">{adjustment.label}</dt>
-                          {/* <dd className="col-sm-6">{formatCurrency(adjustment.amount.currency_code, adjustment.amount.number)}</dd> */}
+                          <dd className="col-sm-6">{formatCurrency(adjustment.amount.currency_code, adjustment.amount.number)}</dd>
                         </Fragment>
                       ))}
                       <dt className="col-sm-6">Total</dt>
-                      {/* <dd className="col-sm-6">{formatCurrency(cartItem.attributes.order_total.total.currency_code, cartItem.attributes.order_total.total.number)}</dd> */}
+                      <dd className="col-sm-6">{formatCurrency(cartItem.attributes.order_total.total.currency_code, cartItem.attributes.order_total.total.number)}</dd>
                     </dl>
                   </td>
                 </tr>
