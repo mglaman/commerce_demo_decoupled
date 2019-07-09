@@ -17,11 +17,12 @@ const cartReducer = handleActions({
     };
   },
   'CART_FETCH_SUCCEEDED': (state, { payload:carts }) => {
+    const included = carts.included || [];
     return {
       ...state,
       carts: carts.data,
-      included: carts.included,
-      itemCount: carts.included
+      included,
+      itemCount: included
       .filter(item => item.type.indexOf('commerce_order_item') === 0)
       .reduce((previousValue, currentValue) => {
         return previousValue + parseInt(currentValue.attributes.quantity)

@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 const Simple = (props) => {
   const { dispatch, defaultVariation } = props;
   return (
-    <div className={`field--name-variations`} key={defaultVariation.entityBundle}>
+    <div className={`field--name-variations`} key={defaultVariation.type}>
       <div className={`field--item`}>
         <button className="button button--primary js-form-submit form-submit btn-success btn" type="button" onClick={() => {
           dispatch(cartAdd(defaultVariation))

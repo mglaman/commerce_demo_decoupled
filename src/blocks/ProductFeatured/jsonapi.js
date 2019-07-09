@@ -17,9 +17,6 @@ const ProductFeatured = (props) => {
   const variationImage = included.filter(include => {
     return include.type === "file--file" && include.id === variationImageData.id
   }).pop();
-  console.log(variationImageData)
-  console.log(variationImage)
-
   const Url = `/product/${id}`;
 
   return (

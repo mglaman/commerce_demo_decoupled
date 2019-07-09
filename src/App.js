@@ -12,7 +12,7 @@ import Footer from './blocks/Footer'
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Catalog from './pages/Catalog';
-import Product from './pages/Product';
+import Product from './pages/Product/jsonapi';
 import { cartFetch, setCartToken } from './actions'
 import CartFlyout from './blocks/CartFlyout'
 import Checkout from './pages/Checkout'
