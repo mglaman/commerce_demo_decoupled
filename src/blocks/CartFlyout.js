@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
-import { cartFlyoutClose, cartRemove } from '../actions'
+import { cartFlyoutClose, cartRemove, cartUpdateItem } from '../actions'
 import { Link } from 'react-router-dom'
 import { MdClose } from 'react-icons/md'
 
@@ -39,7 +39,9 @@ const CartFlyout = (props) => {
                             <Link className={`text-light`} to={`/product/${purchaseEntity.relationships.product_id.data.id}`}>{orderItem.attributes.title}</Link>
                           </td>
                           <td className="cart-block--offcanvas-cart-table__quantity align-middle w-25">
-                            <input className="form-control" type={`number`} min={0} value={parseInt(orderItem.attributes.quantity)} onChange={e => {}}/>
+                            <input className="form-control" type={`number`} min={0} value={parseInt(orderItem.attributes.quantity)} onChange={e => {
+                              dispatch(cartUpdateItem(orderItem, e.target.value))
+                            }}/>
                           </td>
                           <td className="cart-block--offcanvas-cart-table__price align-middle text-light">
                             {orderItem.attributes.total_price.formatted}
@@ -52,11 +54,11 @@ const CartFlyout = (props) => {
                     })}
                     </tbody>
                     <tfoot>
-                    <tr>
+                    {/* <tr>
                       <td className={`text-right`} colSpan={4}>
                         <button type="submit" className="cart-block--offcanvas-contents__update btn btn-link text-light">Update quantities</button>
                       </td>
-                    </tr>
+                    </tr> */}
                     </tfoot>
                   </table>
                 </div>

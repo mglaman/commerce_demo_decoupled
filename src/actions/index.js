@@ -42,7 +42,6 @@ export const cartAdd = createActionThunk('CART_ADD', async (variation, store) =>
 })
 export const cartRemove = createActionThunk('CART_REMOVE', async (orderItem, store) => {
   const { cart: {cartToken} } = store.getState();
-  console.log(orderItem)
   const { id, relationships: {
     order_id: {
       data: {
@@ -55,6 +54,28 @@ export const cartRemove = createActionThunk('CART_REMOVE', async (orderItem, sto
     headers: {
       'Commerce-Cart-Token': cartToken,
     }
+  })
+  store.dispatch(cartFetch());
+})
+
+export const cartUpdateItem = createActionThunk('CART_UPDATE_ITEM', async (orderItem, quantity, store) => {
+  const { cart: {cartToken} } = store.getState();
+  const { id, relationships: {
+    order_id: {
+      data: {
+        id:order_id
+      }
+    }
+  } } = orderItem;
+  await fetch(`${process.env.REACT_APP_API_URL}/cart/${order_id}/items/${id}?_format=json`, {
+    method: 'PATCH',
+    headers: {
+      'Commerce-Cart-Token': cartToken,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      quantity
+    })
   })
   store.dispatch(cartFetch());
 })

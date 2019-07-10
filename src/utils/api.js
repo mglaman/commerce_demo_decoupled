@@ -137,6 +137,18 @@ export async function jsonapiClient(
         'sort': '-changed',
       }
       break;
+      case 'catalog_products':
+          url = '/jsonapi/commerce_product/simple';
+          queryString = {
+            'include': 'variations,variations.field_images',
+            'fields[commerce_product--simple]': 'title,variations',
+            'fields[commerce_product_variation--simple]': 'price,field_images',
+            'fields[file--file]': 'uri',
+            'filter[field_product_categories.entity.name]': parameters.name,
+            'page[limit]': 6,
+            'sort': '-changed',
+          }
+          break;
     case 'product_single':
       url = `/jsonapi/commerce_product/${parameters.bundle}/${parameters.id}`
       queryString = {

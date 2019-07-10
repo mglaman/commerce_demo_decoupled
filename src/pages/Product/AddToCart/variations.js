@@ -7,6 +7,7 @@ import _ from 'lodash'
 class Variations extends PureComponent {
   static propTypes = {
     variations: PropTypes.array.isRequired,
+    included: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
   }
   constructor (props) {

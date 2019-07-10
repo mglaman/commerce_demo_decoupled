@@ -16,6 +16,15 @@ class Product extends PureComponent {
     };
   }
   async componentDidMount() {
+    this.fetchProduct();
+  }
+  async componentDidUpdate(prevProps) {
+    if (prevProps.match.params.productId !== this.props.match.params.productId) {
+      this.fetchProduct();
+    }
+  }
+
+  async fetchProduct() {
     const {productId} = this.props.match.params
 
     try {
@@ -38,6 +47,7 @@ class Product extends PureComponent {
       });
     }
   }
+
   render() {
     if (!this.state.isLoaded) {
       return null
@@ -78,7 +88,7 @@ class Product extends PureComponent {
                   <div className={`field--name-body`}>
                     <div dangerouslySetInnerHTML={{__html: this.state.data.attributes.body.processed}}/>
                   </div>
-                  {variations.length < 2 ? <SimpleAddToCart defaultVariation={defaultVariation}/> : <VariationsAddToCart variations={variations}/>}
+                  {variations.length < 2 ? <SimpleAddToCart defaultVariation={defaultVariation}/> : <VariationsAddToCart variations={variations} included={this.state.included}/>}
                   <div className={`field--name-field-product-categories`}>
                     {productCategories.map(category => (
                       <div key={category.id}>{category.attributes.name}</div>

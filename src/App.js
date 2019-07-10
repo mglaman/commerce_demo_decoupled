@@ -12,7 +12,7 @@ import CatalogMenu from './blocks/CatalogMenu'
 import Footer from './blocks/Footer'
 import Home from './pages/Home';
 import Cart from './pages/Cart';
-import Catalog from './pages/Catalog';
+import Catalog from './pages/Catalog/jsonapi';
 import Product from './pages/Product/jsonapi';
 import { cartFetch, setCartToken } from './actions'
 import CartFlyout from './blocks/CartFlyout'
