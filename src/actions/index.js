@@ -18,17 +18,22 @@ export const cartFetch = createActionThunk('CART_FETCH', async (store) => {
 
 export const cartAdd = createActionThunk('CART_ADD', async (variation, store) => {
   const { cart: {cartToken} } = store.getState();
-  const res = await fetch(`${process.env.REACT_APP_API_URL}/cart/add?_format=json`, {
+  const res = await fetch(`${process.env.REACT_APP_API_URL}/jsonapi/cart/add`, {
     method: 'POST',
     headers: {
       'Commerce-Cart-Token': cartToken,
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/vnd.api+json',
+      'Accept': 'application/vnd.api+json',
     },
-    body: JSON.stringify([{
-      purchased_entity_type: 'commerce_product_variation',
-      purchased_entity_id: variation.variationId,
-      quantity: 1
-    }])
+    body: JSON.stringify({
+      data: [{
+        type: variation.type,
+        id: variation.id,
+        meta: {
+          orderQuantity: 1
+        }
+      }]
+    })
   })
   await res.json();
   store.dispatch(cartFetch());

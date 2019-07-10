@@ -16,8 +16,6 @@ const CartFlyout = (props) => {
     },
     cartFlyout: { open }
   } = props;
-  const cart = carts[0];
-  const cartItems = included.filter(item => item.type.indexOf('commerce_order_item') === 0)
   return (
     <Fragment>
       <aside id="cart-offcanvas" className={`cart-offcanvas is-${open ? 'open' : 'closed'} cart-offcanvas--right`}>
@@ -32,18 +30,16 @@ const CartFlyout = (props) => {
                 <div className={`cart-block--offcanvas-contents__items`}>
                   <table className={`cart-block--offcanvas-cart-table table`}>
                     <tbody>
-                    {cartItems.map(orderItem => {
-                      const purchasedEntityID = orderItem.relationships.purchased_entity.data.id;
-                      const purchaseEntity = included.filter(include => {
-                        return include.id === purchasedEntityID
-                      }).pop();
+                    {carts[0].relationships.order_items.data.map(rel => included[rel.type][rel.id]).map(orderItem => {
+                      const purchasedEntityRelationship = orderItem.relationships.purchased_entity.data;
+                      const purchaseEntity = included[purchasedEntityRelationship.type][purchasedEntityRelationship.id]
                       return (
                         <tr key={orderItem.id}>
                           <td className="cart-block--offcanvas-cart-table__title align-middle w-50">
                             <Link className={`text-light`} to={`/product/${purchaseEntity.relationships.product_id.data.id}`}>{orderItem.attributes.title}</Link>
                           </td>
                           <td className="cart-block--offcanvas-cart-table__quantity align-middle w-25">
-                            <input className="form-control" type={`number`} min={0} defaultValue={parseInt(orderItem.attributes.quantity)} />
+                            <input className="form-control" type={`number`} min={0} value={parseInt(orderItem.attributes.quantity)} onChange={e => {}}/>
                           </td>
                           <td className="cart-block--offcanvas-cart-table__price align-middle text-light">
                             {orderItem.attributes.total_price.formatted}

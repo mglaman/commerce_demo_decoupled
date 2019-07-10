@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { connectRouter } from 'connected-react-router'
-// import { reducer as api} from 'redux-json-api';
 import { combineReducers } from 'redux'
+import { jsonapiNormalize } from '../utils/api'
 
 const cartReducer = handleActions({
   SET_CART_TOKEN: (state, { payload }) => {
@@ -18,16 +18,18 @@ const cartReducer = handleActions({
     };
   },
   'CART_FETCH_SUCCEEDED': (state, { payload:carts }) => {
-    const included = carts.included || [];
+    const normalizedData = jsonapiNormalize(carts);
+    const included = normalizedData.included;
+
     return {
       ...state,
       carts: carts.data,
       included,
-      itemCount: included
+      itemCount: carts.included ? carts.included
       .filter(item => item.type.indexOf('commerce_order_item') === 0)
       .reduce((previousValue, currentValue) => {
         return previousValue + parseInt(currentValue.attributes.quantity)
-      }, 0)
+      }, 0) : 0
     }
   },
   'CART_FETCH_FAILED': (state, { payload }) => {
@@ -93,5 +95,4 @@ export default history => combineReducers({
   cartFlyout: cartFlyoutReducer,
   navigation: navigationReducer,
   checkout: checkoutReducer,
-  // api
 });

@@ -20,9 +20,6 @@ import Checkout from './pages/Checkout'
 
 
 const store = configureStore();
-// store.dispatch(setAxiosConfig({
-//   baseURL: `${process.env.REACT_APP_API_URL}/jsonapi`,
-// }));
 store.dispatch(setCartToken(localStorage.getItem('cartToken') || Math.random().toString(36).substr(2)))
 store.dispatch(cartFetch());
 

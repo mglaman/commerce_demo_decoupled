@@ -170,3 +170,16 @@ export async function jsonapiClient(
   });
   return data;
 }
+
+export function jsonapiNormalize(json) {
+  const ret = {...json}
+  ret.included = {};
+  if (json.included) {
+    const included = [...json.included];
+    included.forEach(entity => {
+      ret.included[entity.type] = ret.included[entity.type] || {}
+      ret.included[entity.type][entity.id] = entity;
+    })
+  }
+  return ret;
+}

@@ -1,6 +1,5 @@
 import React, { Fragment, PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { checkoutChangeStep } from '../../actions'
 
 class ShippingMethod extends PureComponent {
@@ -9,8 +8,8 @@ class ShippingMethod extends PureComponent {
       return null;
     }
 
-    const {cart: {carts}, dispatch } = this.props
-    const cart = carts[0]
+    const { dispatch } = this.props
+    // const cart = carts[0]
     return (
       <Fragment>
         <h3>Shipping method</h3>

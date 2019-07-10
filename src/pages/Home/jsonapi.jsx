@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import ProductFeatured from '../../blocks/ProductFeatured/jsonapi';
 import { jsonapiClient } from '../../utils/api';
-import normalize from 'json-api-normalizer';
 
 class JsonApiFeaturedProducts extends PureComponent {
   constructor(props) {
