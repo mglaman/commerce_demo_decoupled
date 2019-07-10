@@ -101,7 +101,7 @@ export default (props) => {
                   {entities.map(entity => {
                     return (
                       <div className={`col-lg-4 col-md-6`}
-                           key={entity.entityId}>
+                           key={entity.entityUuid}>
                         <ProductFeatured product={entity}/>
                       </div>
                     )

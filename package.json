@@ -27,7 +27,6 @@
     "react-scripts": "2.1.5",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
-    "redux-json-api": "^2.0.1",
     "redux-thunk": "^2.3.0",
     "redux-thunk-actions": "^1.3.2"
   },
