@@ -100,6 +100,15 @@ export async function jsonapiClient(
   options.headers = options.headers || {};
 
   switch (endpoint) {
+    case 'carts':
+      url = '/jsonapi/cart';
+      queryString = {
+        'include': 'order_items,order_items.purchased_entity',
+        'fields[commerce_product_variation--simple]': 'product_id',
+        'fields[commerce_order_item--physical_product_variation]': 'title,quantity,unit_price,total_price,purchased_entity,order_id',
+        'fields[commerce_order--physical]': 'total_price,order_total,coupons,order_items',
+      }
+      break;
     case 'csrf_token':
       url = '/session/token';
       options.text = true;
@@ -112,12 +121,11 @@ export async function jsonapiClient(
       url = `/jsonapi/node/${parameters.bundle}/${parameters.id}`;
       options.headers.Accept = 'application/vnd.api+json';
       break;
-    case 'taxonomy_term': {
+    case 'taxonomy_term':
       url = `/jsonapi/taxonomy_term/${parameters.type}`;
       options.headers.Accept = 'application/vnd.api+json';
       break;
-    }
-    case 'featured_products': {
+    case 'featured_products':
       url = '/jsonapi/commerce_product/simple';
       queryString = {
         'include': 'variations,variations.field_images',
@@ -129,8 +137,7 @@ export async function jsonapiClient(
         'sort': '-changed',
       }
       break;
-    }
-    case 'product_single': {
+    case 'product_single':
       url = `/jsonapi/commerce_product/${parameters.bundle}/${parameters.id}`
       queryString = {
         'include': 'variations,variations.field_images,field_special_categories,field_product_categories,field_brand',
@@ -142,7 +149,6 @@ export async function jsonapiClient(
         'fields[taxonomy_term--brands]': 'name',
       };
       break;
-    }
     default:
       url = endpoint;
       options.headers.Accept = 'application/vnd.api+json';

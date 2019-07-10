@@ -9,7 +9,7 @@ const CartPage = ({ cart, dispatch }) => {
   return (
     <Fragment>
       {cart.carts.map(cartItem => {
-        const cartItems = cart.included.filter(item => item.type.indexOf('commerce_order_item') === 0)
+        const cartItems = cartItem.relationships.order_items.data.map(rel => cart.included[rel.type][rel.id])
         return (
           <div key={cartItem.id} className={`container`}>
           <div className={`row`}>
@@ -17,10 +17,8 @@ const CartPage = ({ cart, dispatch }) => {
               <table className={`table`}>
                 <tbody>
                 {cartItems.map(orderItem => {
-                  const purchasedEntityID = orderItem.relationships.purchased_entity.data.id;
-                  const purchaseEntity = cart.included.filter(include => {
-                    return include.id === purchasedEntityID
-                  }).pop();
+                      const purchasedEntityRelationship = orderItem.relationships.purchased_entity.data;
+                      const purchaseEntity = cart.included[purchasedEntityRelationship.type][purchasedEntityRelationship.id]
                   return (
                     <tr key={orderItem.id}>
                       <td className="cart-block--offcanvas-cart-table__title w-50">
@@ -47,7 +45,7 @@ const CartPage = ({ cart, dispatch }) => {
                       <dt className="col-sm-6">Subtotal</dt>
                       <dd className="col-sm-6">{formatCurrency(cartItem.attributes.order_total.subtotal.currency_code, cartItem.attributes.order_total.subtotal.number)}</dd>
                       {cartItem.attributes.order_total.adjustments.map(adjustment => (
-                        <Fragment>
+                        <Fragment key={adjustment.type}>
                           <dt className="col-sm-6">{adjustment.label}</dt>
                           <dd className="col-sm-6">{formatCurrency(adjustment.amount.currency_code, adjustment.amount.number)}</dd>
                         </Fragment>
