@@ -1,9 +1,9 @@
-import React, { PureComponent,Fragment} from 'react'
-import { Query } from 'react-apollo'
-import { formatCurrency } from '../../utils/currency'
-import graphqlQuery from './graphqlQuery';
+import React, { PureComponent } from 'react'
 import VariationsAddToCart from './AddToCart/variations'
 import SimpleAddToCart from './AddToCart/simple'
+import { jsonapiClient } from '../../utils/api'
+
+// Review and use `https://github.com/dvidsilva/redux-json-api-demo/blob/master/main.js`
 
 class Product extends PureComponent {
   constructor(props) {
@@ -15,29 +15,35 @@ class Product extends PureComponent {
       included: []
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     const {productId} = this.props.match.params
-    fetch(`${process.env.REACT_APP_API_URL}/jsonapi/commerce_product/simple/${productId}?include=variations,variations.field_images,field_special_categories,field_product_categories,field_brand&fields%5Bcommerce_product--simple%5D=title,body,variations,field_special_categories,field_product_categories,field_brand&fields%5Bcommerce_product_variation--simple%5D=sku,price,resolved_price,field_images&fields%5Bfile--file%5D=uri&fields%5Btaxonomy_term--product_categories%5D=name&fields%5Btaxonomy_term--special_categories%5D=name&fields%5Btaxonomy_term--brands%5D=name`)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            data: result.data,
-            included: result.included
-          });
+
+    try {
+      const result = await jsonapiClient(process.env.REACT_APP_API_URL, 'product_single', {
+        parameters: {
+          bundle: 'simple',
+          id: productId,
         },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
+      })
+      this.setState({
+        isLoaded: true,
+        data: result.data,
+        included: result.included
+      });
+    } catch (e) {
+      this.setState({
+        isLoaded: true,
+        error: e
+      });
+    }
   }
   render() {
     if (!this.state.isLoaded) {
       return null
+    }
+    if (this.state.error !== null) {
+      console.log(this.state.error);
+      return 'Oops, an error happened.';
     }
 
     const variations = this.state.data.relationships.variations.data;
@@ -54,7 +60,6 @@ class Product extends PureComponent {
     const productBrand = this.state.included.filter(include => {
       return include.type === "taxonomy_term--brands" && include.id === productBrandId
     }).pop();
-
     return (
       <div className={`container-fluid`}>
         <div className={`container commerce-product--full`}>

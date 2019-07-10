@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react'
 import ProductFeatured from '../../blocks/ProductFeatured/jsonapi';
+import { jsonapiClient } from '../../utils/api';
+import normalize from 'json-api-normalizer';
 
 class JsonApiFeaturedProducts extends PureComponent {
   constructor(props) {
@@ -11,24 +13,21 @@ class JsonApiFeaturedProducts extends PureComponent {
       included: []
     };
   }
-  componentDidMount() {
-    fetch(`${process.env.REACT_APP_API_URL}/jsonapi/commerce_product/simple?include=variations,variations.field_images&fields%5Bcommerce_product--simple%5D=title,variations&fields%5Bcommerce_product_variation--simple%5D=price,field_images&fields%5Bfile--file%5D=uri&filter%5Bfield_special_categories.entity.name%5D%5Bvalue%5D=Featured&page%5Blimit%5D=6&sort=-changed`)
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            data: result.data,
-            included: result.included
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
+  async componentDidMount() {
+    try {
+      const result = await jsonapiClient(process.env.REACT_APP_API_URL, 'featured_products');
+
+      this.setState({
+        isLoaded: true,
+        data: result.data,
+        included: result.included
+      });
+    } catch (error) {
+      this.setState({
+        isLoaded: true,
+        error
+      });
+    }
   }
 
   render() {
@@ -38,7 +37,7 @@ class JsonApiFeaturedProducts extends PureComponent {
 
     return this.state.data.map(product => (
       <div className={`featured-seller col-md-4`} key={product.id}>
-        <ProductFeatured key={document.id} product={product} included={this.state.included}/>
+        <ProductFeatured key={document.id} product={product} included={this.state.included} />
       </div>
     ))
   }

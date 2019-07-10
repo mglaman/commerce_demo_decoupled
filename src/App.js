@@ -3,6 +3,7 @@ import { ApolloProvider } from 'react-apollo';
 import { Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
+// import { setAxiosConfig } from 'redux-json-api';
 import configureStore, { history } from './utils/configureStore';
 import { graphqlClient } from './utils/api';
 
@@ -19,6 +20,9 @@ import Checkout from './pages/Checkout'
 
 
 const store = configureStore();
+// store.dispatch(setAxiosConfig({
+//   baseURL: `${process.env.REACT_APP_API_URL}/jsonapi`,
+// }));
 store.dispatch(setCartToken(localStorage.getItem('cartToken') || Math.random().toString(36).substr(2)))
 store.dispatch(cartFetch());
 

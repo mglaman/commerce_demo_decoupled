@@ -1,5 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { connectRouter } from 'connected-react-router'
+// import { reducer as api} from 'redux-json-api';
 import { combineReducers } from 'redux'
 
 const cartReducer = handleActions({
@@ -92,4 +93,5 @@ export default history => combineReducers({
   cartFlyout: cartFlyoutReducer,
   navigation: navigationReducer,
   checkout: checkoutReducer,
+  // api
 });
