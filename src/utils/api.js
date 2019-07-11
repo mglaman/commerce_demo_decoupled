@@ -167,6 +167,13 @@ export async function jsonapiClient(
       queryString[`fields[commerce_product--${parameters.bundle}]`] = 'title,body,variations,field_special_categories,field_product_categories,field_brand';
       queryString[`fields[commerce_product_variation--${parameters.bundle}]`] = queryVariationFields.join(',')
       break;
+    case 'order_placed':
+        options.headers['Content-Type'] = 'application/vnd.api+json';
+        options.headers.Accept = 'application/vnd.api+json';
+        options.method = 'PATCH';
+        options.body = JSON.stringify({ data: parameters.order });
+        url = `/jsonapi/commerce_order/${parameters.order.type.split('--').pop()}/${parameters.order.id}`
+      break;
     default:
       url = endpoint;
       options.headers.Accept = 'application/vnd.api+json';

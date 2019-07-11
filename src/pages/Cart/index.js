@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { formatCurrency } from '../../utils/currency'
 import { cartRemove } from '../../actions'
 import PromotionCode from './promotionCode'
+import PayPalCheckout from './PayPalCheckout';
 
 const CartPage = ({ cart, dispatch }) => {
   return (
@@ -67,6 +68,9 @@ const CartPage = ({ cart, dispatch }) => {
               {/*<button type="submit" className="btn btn-link"> <FaSpinner/> Update quantities</button>*/}
               <Link to={`/checkout/${cartItem.id}`} className={`btn btn-primary`}>Checkout (onsite)</Link>
               <a href={`${process.env.REACT_APP_API_URL}/checkout/${cartItem.id}?cartToken=${cart.cartToken}`} className={`ml-1 btn btn-primary`}>Checkout (offsite)</a>
+            </div>
+            <div className={`offset-md-8 col-md-4 text-right`}>
+            <PayPalCheckout cart={cartItem} />
             </div>
           </div>
         </div>
