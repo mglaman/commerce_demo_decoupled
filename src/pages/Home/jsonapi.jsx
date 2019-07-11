@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import ProductFeatured from '../../blocks/ProductFeatured/jsonapi';
-import { jsonapiClient } from '../../utils/api';
+import { jsonapiClient, jsonapiNormalize } from '../../utils/api';
 
 class JsonApiFeaturedProducts extends PureComponent {
   constructor(props) {
@@ -15,11 +15,11 @@ class JsonApiFeaturedProducts extends PureComponent {
   async componentDidMount() {
     try {
       const result = await jsonapiClient(process.env.REACT_APP_API_URL, 'featured_products');
-
+      const resultNormalized = jsonapiNormalize(result);
       this.setState({
         isLoaded: true,
-        data: result.data,
-        included: result.included
+        data: resultNormalized.data,
+        included: resultNormalized.included
       });
     } catch (error) {
       this.setState({

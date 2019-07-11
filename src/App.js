@@ -49,7 +49,7 @@ class App extends Component {
               {catalogRoutes.map(routeInfo => (
                 <Route key={routeInfo.path} path={`/catalog/${routeInfo.path}`} render={(props) => <Catalog {...props} categoryName={routeInfo.categoryName} />} />
               ))}
-              <Route path={`/product/:productId`} component={Product} />
+              <Route path={`/product/:productType/:productId`} component={Product} />
             </Switch>
             <Footer />
             <CartFlyout/>

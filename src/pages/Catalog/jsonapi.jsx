@@ -1,6 +1,6 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import ProductFeatured from '../../blocks/ProductFeatured/jsonapi'
-import { jsonapiClient } from '../../utils/api'
+import { jsonapiClient, jsonapiNormalize } from '../../utils/api'
 
 class JsonApiCatalog extends PureComponent {
   constructor(props) {
@@ -19,11 +19,11 @@ class JsonApiCatalog extends PureComponent {
           name: this.props.categoryName
         }
       });
-
+      const resultNormalized = jsonapiNormalize(result);
       this.setState({
         isLoaded: true,
-        data: result.data,
-        included: result.included
+        data: resultNormalized.data,
+        included: resultNormalized.included
       });
     } catch (error) {
       this.setState({

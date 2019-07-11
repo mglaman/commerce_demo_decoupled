@@ -3,8 +3,6 @@ import VariationsAddToCart from './AddToCart/variations'
 import SimpleAddToCart from './AddToCart/simple'
 import { jsonapiClient, jsonapiNormalize } from '../../utils/api'
 
-// Review and use `https://github.com/dvidsilva/redux-json-api-demo/blob/master/main.js`
-
 class Product extends PureComponent {
   constructor(props) {
     super(props);
@@ -25,12 +23,12 @@ class Product extends PureComponent {
   }
 
   async fetchProduct() {
-    const {productId} = this.props.match.params
+    const {productType, productId} = this.props.match.params
 
     try {
       const result = await jsonapiClient(process.env.REACT_APP_API_URL, 'product_single', {
         parameters: {
-          bundle: 'simple',
+          bundle: productType,
           id: productId,
         },
       })
@@ -88,7 +86,7 @@ class Product extends PureComponent {
                   <div className={`field--name-body`}>
                     <div dangerouslySetInnerHTML={{__html: this.state.data.attributes.body.processed}}/>
                   </div>
-                  {variations.length < 2 ? <SimpleAddToCart defaultVariation={defaultVariation}/> : <VariationsAddToCart variations={variations} included={this.state.included}/>}
+                  {variations.length < 2 ? <SimpleAddToCart defaultVariation={defaultVariation}/> : <VariationsAddToCart variations={variations.map(rel => this.state.included[rel.type][rel.id])} included={this.state.included}/>}
                   <div className={`field--name-field-product-categories`}>
                     {productCategories.map(category => (
                       <div key={category.id}>{category.attributes.name}</div>

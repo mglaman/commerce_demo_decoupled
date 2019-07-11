@@ -13,28 +13,28 @@ class Variations extends PureComponent {
   constructor (props) {
     super(props);
     this.onChange = this.onChange.bind(this)
-    const { variations } = props;
-    const {entity: defaultVariation} = variations[0]
+    const { variations, included } = props;
+    const defaultVariation = variations[0];
 
     // Build the known attributes.
     const selectedAttributes = {};
     const attributes = {}
-    _.each(variations, ({ entity:variation}) => {
-      _.each(variation, (value, key) => {
+    _.each(variations, (variation) => {
+      _.each(variation.relationships, (value, key) => {
         if (_.includes(key, 'attribute')) {
           // If this is our first time encountering the attribute, prime its entry.
           if (!attributes.hasOwnProperty(key)) {
             attributes[key] = [];
-            selectedAttributes[key] = defaultVariation[key].entity.entityId
+            selectedAttributes[key] = defaultVariation.relationships[key].data.id
           }
-          const { entity:attributeEntity } = value;
+          const attributeEntity = included[value.data.type][value.data.id];
           if (!_.some(attributes[key], attributeEntity)) {
             attributes[key].push(attributeEntity);
           }
         }
       })
     })
-    _.each(attributes, (attribute) => _.sortBy(attribute, ['weight', 'name']))
+    _.each(attributes, (attribute) => _.sortBy(attribute.attributes, ['weight', 'name']))
     // End building attributes.
 
     this.state = {
@@ -45,11 +45,15 @@ class Variations extends PureComponent {
   }
   getResolvedVariation () {
     const self = this
-    return this.props.variations.filter(({ entity: variation }) => {
-      return _.every(Object.keys(self.state.attributes), (fieldName) => {
-        return variation.hasOwnProperty(fieldName) && (self.state.selectedAttributes[fieldName] === variation[fieldName].entity.entityId);
-      })
-    }).shift().entity
+    const filtered = this.props.variations.filter(variation => {
+      const result = _.every(Object.keys(self.state.attributes), (fieldName) => {
+        const selectedAttributeValue = self.state.selectedAttributes[fieldName];
+        const variationAttributeValue = variation.relationships[fieldName].data;
+        return selectedAttributeValue === variationAttributeValue.id;
+      });
+      return result;
+    });
+    return filtered.shift();
   }
   onChange({ target: { name, value } }) {
     this.setState({
@@ -73,21 +77,21 @@ class Variations extends PureComponent {
             <div className={`product--rendered-attribute`}>
               <div className="panel-title form-required">Color</div>
               <div className={``}>
-                {this.state.attributes.attributeColor.map((colorAttribute, key) => {
+                {this.state.attributes.attribute_color.map((colorAttribute, key) => {
                   return (
                     <div key={key} className="form-check form-check-inline">
                       <input
                         className="form-check-input d-none form-radio"
                         type="radio"
-                        name={`attributeColor`}
+                        name={`attribute_color`}
                         onChange={this.onChange}
-                        value={colorAttribute.entityId}
-                        checked={this.state.selectedAttributes.attributeColor === colorAttribute.entityId}
-                        id={`attributeColor_${colorAttribute.entityId}`}
+                        value={colorAttribute.id}
+                        checked={this.state.selectedAttributes.attribute_color === colorAttribute.id}
+                        id={`attributeColor_${colorAttribute.id}`}
                       />
-                        <label className="form-check-label option" htmlFor={`attributeColor_${colorAttribute.entityId}`}>
+                        <label className="form-check-label option" htmlFor={`attributeColor_${colorAttribute.id}`}>
                           <div className="color_field__swatch color_field__swatch--square" style={{
-                            backgroundColor: colorAttribute.fieldColor.color,
+                            backgroundColor: colorAttribute.attributes.field_color.color,
                             width: '30px',
                             height: '30px'
                           }}/>
@@ -101,11 +105,11 @@ class Variations extends PureComponent {
           <div className={`field--item form-type-select`}>
             <div className="panel-title form-required">Size</div>
             <div className="select-wrapper">
-              <select name={`attributeSize`} className={`custom-select`} onChange={this.onChange} value={this.state.selectedAttributes.attributeSize}>
-                {this.state.attributes.attributeSize.map((sizeAttribute, key) => {
+              <select name={`attribute_size`} className={`custom-select`} onChange={this.onChange} value={this.state.selectedAttributes.attribute_size}>
+                {this.state.attributes.attribute_size.map((sizeAttribute, key) => {
                   return (
-                    <option value={sizeAttribute.entityId} key={key}>
-                      {sizeAttribute.entityLabel}
+                    <option value={sizeAttribute.id} key={key}>
+                      {sizeAttribute.attributes.name}
                     </option>
                   )
                 })}

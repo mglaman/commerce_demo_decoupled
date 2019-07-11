@@ -138,28 +138,34 @@ export async function jsonapiClient(
       }
       break;
       case 'catalog_products':
-          url = '/jsonapi/commerce_product/simple';
+          url = '/jsonapi/commerce_product';
           queryString = {
             'include': 'variations,variations.field_images',
             'fields[commerce_product--simple]': 'title,variations',
             'fields[commerce_product_variation--simple]': 'price,field_images',
             'fields[file--file]': 'uri',
-            'filter[field_product_categories.entity.name]': parameters.name,
+            'filter[field_product_categories.name][value]': parameters.name,
             'page[limit]': 6,
-            'sort': '-changed',
+            'sort': 'title',
           }
           break;
     case 'product_single':
       url = `/jsonapi/commerce_product/${parameters.bundle}/${parameters.id}`
       queryString = {
-        'include': 'variations,variations.field_images,field_special_categories,field_product_categories,field_brand',
-        'fields[commerce_product--simple]': 'title,body,variations,field_special_categories,field_product_categories,field_brand',
-        'fields[commerce_product_variation--simple]': 'sku,price,resolved_price,field_images',
         'fields[file--file]': 'uri',
         'fields[taxonomy_term--product_categories]': 'name',
         'fields[taxonomy_term--special_categories]': 'name',
         'fields[taxonomy_term--brands]': 'name',
       };
+      const queryInclude = ['variations', 'variations.field_images', 'field_special_categories', 'field_product_categories', 'field_brand'];
+      const queryVariationFields = ['sku', 'price', 'resolved_price', 'field_images'];
+      if (parameters.bundle === 'clothing') {
+        queryInclude.push('variations.attribute_color', 'variations.attribute_size')
+        queryVariationFields.push('attribute_color', 'attribute_size');
+      }
+      queryString['include'] = queryInclude.join(',');
+      queryString[`fields[commerce_product--${parameters.bundle}]`] = 'title,body,variations,field_special_categories,field_product_categories,field_brand';
+      queryString[`fields[commerce_product_variation--${parameters.bundle}]`] = queryVariationFields.join(',')
       break;
     default:
       url = endpoint;
