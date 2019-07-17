@@ -36,7 +36,7 @@ const CartFlyout = (props) => {
                       return (
                         <tr key={orderItem.id}>
                           <td className="cart-block--offcanvas-cart-table__title align-middle w-50">
-                            <Link className={`text-light`} to={`/product/${purchaseEntity.relationships.product_id.data.id}`}>{orderItem.attributes.title}</Link>
+                            <Link className={`text-light`} to={`/product/${purchaseEntity.relationships.product_id.data.type.split('--').pop()}/${purchaseEntity.relationships.product_id.data.id}`}>{orderItem.attributes.title}</Link>
                           </td>
                           <td className="cart-block--offcanvas-cart-table__quantity align-middle w-25">
                             <input className="form-control" type={`number`} min={0} value={parseInt(orderItem.attributes.quantity)} onChange={e => {
