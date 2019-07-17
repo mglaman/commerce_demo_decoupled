@@ -12,7 +12,7 @@ const PayPalCheckout = ({ cart }, { dispatch }) => {
       purchase_units: [{
         amount: {
           currency_code: cart.attributes.total_price.currency_code,
-          value: cart.attributes.total_price.number
+          value: Math.abs(cart.attributes.total_price.number)
         }
       }],
       application_context: {
