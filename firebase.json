@@ -1,5 +1,6 @@
 {
     "hosting": {
+      "target": "decoupled_days",
       "public": "build",
       "ignore": [
         "firebase.json",

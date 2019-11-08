@@ -11,9 +11,11 @@
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
     "history": "^4.7.2",
+    "json-api-normalizer": "^0.4.15",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
     "prop-types": "^15.7.2",
+    "qs": "^6.7.0",
     "react": "^16.8.3",
     "react-apollo": "^2.5.1",
     "react-dom": "^16.8.3",
@@ -33,7 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "react-scripts build && firebase deploy"
+    "deploy": "react-scripts build && firebase deploy --only hosting:decoupled_days"
   },
   "eslintConfig": {
     "extends": "react-app"

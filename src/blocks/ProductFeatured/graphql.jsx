@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 
 const ProductFeatured = (props) => {
   const { product: {
-    entityId,
+    entityUuid,
     variations
   } } = props;
   const {entity: defaultVariation} = variations[0]
   const image = defaultVariation.fieldImages[0];
-  const Url = `/product/${entityId}`;
+  const Url = `/product/${entityUuid}`;
 
   return (
       <div className={`commerce-product--catalog`}>

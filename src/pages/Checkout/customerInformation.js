@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { checkoutChangeStep } from '../../actions'
@@ -13,7 +13,7 @@ class CustomerInformation extends PureComponent {
     if (carts.length === 0) {
       return <div key={`loading`}>Loading...</div>
     }
-    const cart = carts[0]
+    // const cart = carts[0]
 
     return (
       <div>

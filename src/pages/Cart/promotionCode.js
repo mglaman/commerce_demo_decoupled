@@ -18,7 +18,7 @@ class PromotionCode extends PureComponent {
     const {cart: {cartToken, carts}, dispatch} = this.props
     const cart = carts[0]
 
-    await fetch(`${process.env.REACT_APP_API_URL}/cart/${cart.order_id}/coupons?_format=json`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/cart/${cart.id}/coupons?_format=json`, {
       method: 'DELETE',
       headers: {
         'Commerce-Cart-Token': cartToken,
@@ -39,7 +39,7 @@ class PromotionCode extends PureComponent {
     const {cart: {cartToken, carts}, dispatch} = this.props
     const cart = carts[0]
 
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/cart/${cart.order_id}/coupons?_format=json`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/cart/${cart.id}/coupons?_format=json`, {
       method: 'PATCH',
       headers: {
         'Commerce-Cart-Token': cartToken,
@@ -62,7 +62,7 @@ class PromotionCode extends PureComponent {
   render () {
     const {cart: {carts}} = this.props
     const cart = carts[0]
-    if (cart.coupons.length > 0) {
+    if (cart.relationships.coupons.data.length > 0) {
       return (
         <div className={`row`} key={`applied`}>
           <div className={`col-md-9`}>

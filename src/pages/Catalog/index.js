@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react';
 import {Query} from 'react-apollo';
 import gql from 'graphql-tag';
-import ProductFeatured from '../../blocks/ProductFeatured'
+import ProductFeatured from '../../blocks/ProductFeatured/graphql'
 
 export default (props) => {
   const GET_PRODUCTS = gql`
@@ -101,7 +101,7 @@ export default (props) => {
                   {entities.map(entity => {
                     return (
                       <div className={`col-lg-4 col-md-6`}
-                           key={entity.entityId}>
+                           key={entity.entityUuid}>
                         <ProductFeatured product={entity}/>
                       </div>
                     )

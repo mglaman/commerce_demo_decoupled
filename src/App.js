@@ -3,6 +3,7 @@ import { ApolloProvider } from 'react-apollo';
 import { Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router'
+// import { setAxiosConfig } from 'redux-json-api';
 import configureStore, { history } from './utils/configureStore';
 import { graphqlClient } from './utils/api';
 
@@ -11,8 +12,8 @@ import CatalogMenu from './blocks/CatalogMenu'
 import Footer from './blocks/Footer'
 import Home from './pages/Home';
 import Cart from './pages/Cart';
-import Catalog from './pages/Catalog';
-import Product from './pages/Product';
+import Catalog from './pages/Catalog/jsonapi';
+import Product from './pages/Product/jsonapi';
 import { cartFetch, setCartToken } from './actions'
 import CartFlyout from './blocks/CartFlyout'
 import Checkout from './pages/Checkout'
@@ -48,7 +49,7 @@ class App extends Component {
               {catalogRoutes.map(routeInfo => (
                 <Route key={routeInfo.path} path={`/catalog/${routeInfo.path}`} render={(props) => <Catalog {...props} categoryName={routeInfo.categoryName} />} />
               ))}
-              <Route path={`/product/:productId`} component={Product} />
+              <Route path={`/product/:productType/:productId`} component={Product} />
             </Switch>
             <Footer />
             <CartFlyout/>
